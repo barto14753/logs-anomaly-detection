@@ -10,3 +10,17 @@ datasources:
     password: user_password
     jsonData:
       httpMode: GET
+  - name: mysql
+    type: mysql
+    access: proxy
+    url: http://mysql:8086
+    database: logs
+    user: user
+    password: password
+    basicAuth: true
+    isDefault: true
+    jsonData:
+      timezone: "browser"
+      maxOpenConns: 0
+      maxIdleConns: 2
+      connMaxLifetime: "14400s"
