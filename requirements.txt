@@ -1,2 +1,3 @@
 influxdb-client
 mysql-connector-python
+tqdm
