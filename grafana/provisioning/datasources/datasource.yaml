@@ -13,7 +13,7 @@ datasources:
   - name: mysql
     type: mysql
     access: proxy
-    url: http://mysql:8086
+    url: mysql:8086
     database: logs
     user: user
     password: password

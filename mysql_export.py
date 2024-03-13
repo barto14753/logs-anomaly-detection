@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 logs_file="logs.csv"
 table_name = "network_data"
+BULK_SIZE = 500000
 
 # Replace these with your actual MySQL database credentials
 db_config = {
@@ -48,38 +49,40 @@ print("Table created successfully.")
 
 
 with open(logs_file, 'r') as file:
-    # Create a CSV DictReader object
     csv_reader = csv.DictReader(file)
-
-    # Iterate through each row in the CSV file
-    for row in tqdm(csv_reader, desc="Processing", unit="item"):
-        # Each row is a dictionary with column names as keys
-        insert_query = """
+    insert_query = """
         INSERT INTO network_data 
         (Time, Duration, SrcDevice, DstDevice, Protocol, SrcPort, DstPort, SrcPackets, DstPackets, SrcBytes, DstBytes) 
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """
-
+    """
+    data = []
+    i = 0
+    for row in tqdm(csv_reader, desc="Processing", unit="item"):
         seconds = int(row['Time'])
-        base_datetime = datetime(2022, 1, 1)  # You can adjust this base datetime
+        base_datetime = datetime(2024, 1, 1)
         duration_timedelta = timedelta(seconds=seconds)
         result_datetime = base_datetime + duration_timedelta
 
-        # Replace the following with your actual data
-        data = (
-            result_datetime, 
-            int(row['Duration']), 
-            row['SrcDevice'], 
-            row['DstDevice'], 
-            row['Protocol'], 
-            row['SrcPort'], 
-            row['DstPort'], 
-            int(row['SrcPackets']), 
-            int(row['DstPackets']), 
-            int(row['SrcBytes']), 
-            int(row['DstBytes'])
-        )
+        try:
+            data.append((
+                result_datetime, 
+                int(row['Duration']), 
+                row['SrcDevice'], 
+                row['DstDevice'], 
+                row['Protocol'], 
+                row['SrcPort'], 
+                row['DstPort'], 
+                int(row['SrcPackets']), 
+                int(row['DstPackets']), 
+                int(row['SrcBytes']), 
+                int(row['DstBytes'])
+            ))
+        except Exception as ex:
+            print(f"Exception occurred: {ex}")
 
-        cursor.execute(insert_query, data)
-        connection.commit()
+        # Split insertion to many bulks to meet packet size limit
+        if len(data) == BULK_SIZE:
+            cursor.executemany(insert_query, data)
+            connection.commit()
+            data = []
 
