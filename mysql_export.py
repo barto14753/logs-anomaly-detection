@@ -2,11 +2,13 @@ import mysql.connector
 import csv
 from datetime import datetime, timedelta
 from tqdm import tqdm
+import random
 
 
 logs_file="logs.csv"
 table_name = "network_data"
 BULK_SIZE = 500000
+base_datetime = datetime(2024, 3, 13)
 
 # Replace these with your actual MySQL database credentials
 db_config = {
@@ -30,7 +32,7 @@ except Exception as ex:
 # Create the network_data table
 create_table_query = f"""
 CREATE TABLE IF NOT EXISTS {table_name} (
-    `Time` DATETIME,
+    `time` DATETIME,
     `Duration` BIGINT,
     `SrcDevice` VARCHAR(255),
     `DstDevice` VARCHAR(255),
@@ -52,14 +54,35 @@ with open(logs_file, 'r') as file:
     csv_reader = csv.DictReader(file)
     insert_query = """
         INSERT INTO network_data 
-        (Time, Duration, SrcDevice, DstDevice, Protocol, SrcPort, DstPort, SrcPackets, DstPackets, SrcBytes, DstBytes) 
+        (time, Duration, SrcDevice, DstDevice, Protocol, SrcPort, DstPort, SrcPackets, DstPackets, SrcBytes, DstBytes) 
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     data = []
+
+    # Generate fake attack data 
+    for i in range(10000):
+        seconds = random.randint(120000, 120100)
+        duration_timedelta = timedelta(seconds=seconds)
+        result_datetime = base_datetime + duration_timedelta
+
+        data.append((
+            result_datetime,
+            random.randint(1000, 10000),
+            "src", 
+            "dst", 
+            "tcp", 
+            "src_port", 
+            "dst_port", 
+            random.randint(300000000, 500000000),
+            random.randint(300000000, 500000000),
+            random.randint(60000000000, 100000000000),
+            random.randint(60000000000, 100000000000)
+        ))
+
+
     i = 0
     for row in tqdm(csv_reader, desc="Processing", unit="item"):
         seconds = int(row['Time'])
-        base_datetime = datetime(2024, 1, 1)
         duration_timedelta = timedelta(seconds=seconds)
         result_datetime = base_datetime + duration_timedelta
 
