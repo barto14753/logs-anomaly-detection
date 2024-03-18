@@ -15,6 +15,9 @@ docker-compose up
 
 # Run script to import logs data to database
 python3 mysql_export.py
+
+# Run script to generate attack logs
+python3 attack_logs_generator.py
 ```
 
 ### Grafana
