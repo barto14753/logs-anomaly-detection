@@ -105,21 +105,25 @@ src_ports = random.sample(sorted(src_ports), ATTACK_PORTS)
 dst_ports = random.sample(sorted(dst_ports), ATTACKED_PORTS)
 
 def generate_range_with_repeats(start, end, num):
-    half_length = num // 2
-    result = [i for i in range(start, end + 1) for _ in range(2)]
-    return result[:half_length * 2]
+    return np.linspace(start, end, num, dtype=int)
+
+max_duration = np.max(duration)
+max_src_bytes = np.max(src_bytes)
+max_dst_bytes = np.max(dst_bytes)
+max_src_packets = np.max(src_packets)
+max_dst_packets = np.max(dst_packets)
 
 for timestamp in generate_range_with_repeats(start_time, end_time, NUMBER_OF_LOGS):
-    dur = np.max(duration) * np.random.uniform(1.5, 2.5)
+    dur = max_duration * np.random.uniform(1.5, 2.5)
     src_device = random.choice(src_devices)
     dst_device = random.choice(dst_devices)
     protocol = random.choice(protocols)
     src_port = random.choice(src_ports)
     dst_port = random.choice(dst_ports)
-    src_byte = np.max(src_bytes) * np.random.uniform(1.5, 2.5)
-    dst_byte = np.max(dst_bytes) * np.random.uniform(1.5, 2.5)
-    src_packet = np.max(src_packets) * np.random.uniform(1.5, 2.5)
-    dst_packet = np.max(dst_packets) * np.random.uniform(1.5, 2.5)
+    src_byte = max_src_bytes * np.random.uniform(1.5, 2.5)
+    dst_byte = max_dst_bytes * np.random.uniform(1.5, 2.5)
+    src_packet = max_src_packets * np.random.uniform(1.5, 2.5)
+    dst_packet = max_dst_packets * np.random.uniform(1.5, 2.5)
     attack_log = (timestamp, dur, src_device, dst_device, protocol, src_port, dst_port, src_byte, dst_byte, src_packet, dst_packet)
     logs.append(attack_log)
     print(attack_log)
