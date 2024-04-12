@@ -27,6 +27,8 @@ ATTACKED_DEVICES = 50
 ATTACK_PROTOCOLS = 3
 ATTACK_PORTS = 100
 ATTACKED_PORTS = 10
+MIN_MODIFIER = 1.5
+MAX_MODIFIER = 2.5
 
 def remove_zeros(data):
     return [x for x in data if x != 0]
@@ -113,17 +115,20 @@ max_dst_bytes = np.max(dst_bytes)
 max_src_packets = np.max(src_packets)
 max_dst_packets = np.max(dst_packets)
 
+def get_random_value():
+    return np.random.uniform(MIN_MODIFIER, MAX_MODIFIER)
+
 for timestamp in generate_range_with_repeats(start_time, end_time, NUMBER_OF_LOGS):
-    dur = max_duration * np.random.uniform(1.5, 2.5)
+    dur = max_duration * get_random_value()
     src_device = random.choice(src_devices)
     dst_device = random.choice(dst_devices)
     protocol = random.choice(protocols)
     src_port = random.choice(src_ports)
     dst_port = random.choice(dst_ports)
-    src_byte = max_src_bytes * np.random.uniform(1.5, 2.5)
-    dst_byte = max_dst_bytes * np.random.uniform(1.5, 2.5)
-    src_packet = max_src_packets * np.random.uniform(1.5, 2.5)
-    dst_packet = max_dst_packets * np.random.uniform(1.5, 2.5)
+    src_byte = max_src_bytes * get_random_value()
+    dst_byte = max_dst_bytes * get_random_value()
+    src_packet = max_src_packets * get_random_value()
+    dst_packet = max_dst_packets * get_random_value()
     attack_log = (timestamp, dur, src_device, dst_device, protocol, src_port, dst_port, src_byte, dst_byte, src_packet, dst_packet)
     logs.append(attack_log)
     print(attack_log)
