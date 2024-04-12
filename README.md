@@ -19,11 +19,6 @@ python3 mysql_export.py
 # Run script to generate attack logs
 python3 attack_logs_generator.py
 ```
-
-### Grafana
-
-Grafana on [localhost:3000](http://localhost:3000)
-
 ### Attack Logs Generation
 
 The `attack_logs_generator.py` script is responsible for generating simulated attack logs. This script calculate statistics of the provided logs and based on them append newly generated logs simulating DDOS attack.
@@ -41,6 +36,16 @@ You can modify the parameters of the `attack_logs_generator.py` inside script. H
 - `ATTACKED_PORTS`: This parameter defines the number of different ports that are being attacked.
 - `MIN_MODIFIER` : This parameter defines the minimum value of the random modifier that is used to generate the logs.
 - `MAX_MODIFIER` : This parameter defines the maximum value of the random modifier that is used to generate the logs.
+
+### Grafana
+
+Grafana on [localhost:3000](http://localhost:3000)
+
+#### Add mysql datasource
+![screencapture-localhost-3000-connections-datasources-edit-bdijk1g9mxkhsf-2024-04-12-22_15_46](https://github.com/barto14753/logs-anomaly-detection/assets/56938330/beadd532-712c-4840-bd5e-9f63c8b79a52)
+
+#### Example dashboard
+![screencapture-localhost-3000-explore-2024-04-12-22_38_00](https://github.com/barto14753/logs-anomaly-detection/assets/56938330/28577465-20f8-48da-b047-b94d76df112c)
 
 ## Task 2
 
