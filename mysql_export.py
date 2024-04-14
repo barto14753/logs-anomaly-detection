@@ -5,7 +5,7 @@ from tqdm import tqdm
 import random
 
 
-logs_file="logs.csv"
+logs_file="new_logs.csv"
 table_name = "network_data"
 BULK_SIZE = 500000
 base_datetime = datetime(2024, 3, 13)

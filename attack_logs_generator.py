@@ -21,7 +21,7 @@ dst_packets = list()
 
 # Attack logs stats
 NUMBER_OF_LOGS = 100000
-ATTACK_DURATION = 900 # 15 minutes
+ATTACK_DURATION = 300 # 5 minutes
 ATTACKER_DEVICES = 1000
 ATTACKED_DEVICES = 50
 ATTACK_PROTOCOLS = 3
@@ -98,6 +98,8 @@ print(f"Min dst packets {np.min(dst_packets)} | Max dst packets {np.max(dst_pack
 # Get time of attack
 start_time = np.random.randint(np.min(time), np.max(time) - ATTACK_DURATION)
 end_time = start_time + ATTACK_DURATION
+print("Start time: ", start_time)
+print("End time: ", end_time)
 
 # Get random src and dst devices, protocols, src and dst ports
 src_devices = random.sample(sorted(src_devices), ATTACKER_DEVICES)
@@ -119,19 +121,19 @@ def get_random_value():
     return np.random.uniform(MIN_MODIFIER, MAX_MODIFIER)
 
 for timestamp in generate_range_with_repeats(start_time, end_time, NUMBER_OF_LOGS):
-    dur = max_duration * get_random_value()
+    dur = int(max_duration * get_random_value())
     src_device = random.choice(src_devices)
     dst_device = random.choice(dst_devices)
     protocol = random.choice(protocols)
     src_port = random.choice(src_ports)
     dst_port = random.choice(dst_ports)
-    src_byte = max_src_bytes * get_random_value()
-    dst_byte = max_dst_bytes * get_random_value()
-    src_packet = max_src_packets * get_random_value()
-    dst_packet = max_dst_packets * get_random_value()
-    attack_log = (timestamp, dur, src_device, dst_device, protocol, src_port, dst_port, src_byte, dst_byte, src_packet, dst_packet)
+    src_byte = int(max_src_bytes * get_random_value())
+    dst_byte = int(max_dst_bytes * get_random_value())
+    src_packet = int(max_src_packets * get_random_value())
+    dst_packet = int(max_dst_packets * get_random_value())
+    attack_log = (timestamp, dur, src_device, dst_device, protocol, src_port, dst_port, src_byte, 0, src_packet, 0)
     logs.append(attack_log)
-    print(attack_log)
+    # print(attack_log)
 
 
 logs.sort(key=lambda x: x[0])
