@@ -19,6 +19,7 @@ python3 mysql_export.py
 # Run script to generate attack logs
 python3 attack_logs_generator.py
 ```
+
 ### Attack Logs Generation
 
 The `attack_logs_generator.py` script is responsible for generating simulated attack logs. This script calculate statistics of the provided logs and based on them append newly generated logs simulating DDOS attack.
@@ -42,11 +43,13 @@ You can modify the parameters of the `attack_logs_generator.py` inside script. H
 Grafana on [localhost:3000](http://localhost:3000)
 
 #### Add mysql datasource
+
 ![screencapture-localhost-3000-connections-datasources-edit-bdijk1g9mxkhsf-2024-04-12-22_15_46](https://github.com/barto14753/logs-anomaly-detection/assets/56938330/beadd532-712c-4840-bd5e-9f63c8b79a52)
 
 #### Example dashboard
+
 ![screencapture-localhost-3000-explore-2024-04-12-22_38_00](https://github.com/barto14753/logs-anomaly-detection/assets/56938330/28577465-20f8-48da-b047-b94d76df112c)
 
 ## Task 2
 
-Analyze logs to detect and classify cyber attack
+Analyze logs to detect and classify cyber attack. Notebook analysis in `analysis/analysis.ipynb` based on logs provided from other team
